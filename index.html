@@ -413,6 +413,85 @@ html, body {
   border-color: rgba(212, 153, 106, 0.5);
 }
 
+/* === iPhone TAP ZONES (huge hit areas on left/right) === */
+.tap-zone {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  width: 30%;
+  z-index: 40;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+.tap-zone.left { left: 0; }
+.tap-zone.right { right: 0; }
+
+/* === iPhone VISIBLE NAV BUTTONS === */
+.touch-nav {
+  position: fixed;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 70;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  background: rgba(26, 22, 20, 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(245, 239, 230, 0.15);
+  border-radius: 32px;
+  padding: 8px 12px;
+  font-family: 'Inter', sans-serif;
+  transition: opacity 0.3s ease;
+}
+
+.touch-nav button {
+  background: rgba(245, 239, 230, 0.08);
+  border: 1px solid rgba(245, 239, 230, 0.12);
+  color: var(--cream);
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  padding: 10px 18px;
+  border-radius: 22px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  min-width: 84px;
+  transition: all 0.15s;
+}
+
+.touch-nav button:active {
+  background: var(--amber);
+  color: var(--bg-dark);
+  transform: scale(0.94);
+}
+
+.touch-nav .progress-chip {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--amber);
+  padding: 0 12px;
+  letter-spacing: 0.15em;
+  min-width: 60px;
+  text-align: center;
+}
+
+/* Auto-hide on desktop, always visible on touch */
+@media (hover: hover) {
+  .tap-zone { display: none; }
+  .touch-nav { opacity: 0; pointer-events: none; }
+  .touch-nav:hover { opacity: 1; pointer-events: auto; }
+}
+
+@media (hover: none) {
+  .tap-zone { display: block; }
+  .touch-nav { opacity: 1; }
+}
+
 @media (max-width: 1200px) {
   .title-main { font-size: 48px; }
   .title-question { font-size: 56px; }
@@ -687,6 +766,59 @@ html, body {
   document.addEventListener('fullscreenchange', () => {
     fsBtn.style.display = document.fullscreenElement ? 'none' : 'block';
   });
+
+  // === iPhone Tap Zones (left/right 30% of screen) ===
+  // Build them in DOM
+  const tapLeft = document.createElement('div');
+  tapLeft.className = 'tap-zone left';
+  tapLeft.setAttribute('aria-label', 'Previous slide');
+  document.body.appendChild(tapLeft);
+  const tapRight = document.createElement('div');
+  tapRight.className = 'tap-zone right';
+  tapRight.setAttribute('aria-label', 'Next slide');
+  document.body.appendChild(tapRight);
+
+  tapLeft.addEventListener('click', (e) => { e.stopPropagation(); prev(); });
+  tapRight.addEventListener('click', (e) => { e.stopPropagation(); next(); });
+
+  // === iPhone Touch Nav (visible buttons) ===
+  const touchNav = document.createElement('div');
+  touchNav.className = 'touch-nav';
+  touchNav.innerHTML = `
+    <button id="prevBtn">← Prev</button>
+    <span class="progress-chip" id="touchProgress">1 / 11</span>
+    <button id="nextBtn">Next →</button>
+  `;
+  document.body.appendChild(touchNav);
+  document.getElementById('prevBtn').addEventListener('click', (e) => { e.stopPropagation(); prev(); });
+  document.getElementById('nextBtn').addEventListener('click', (e) => { e.stopPropagation(); next(); });
+  const touchProgress = document.getElementById('touchProgress');
+
+  // === Robust swipe (don't fight Safari's edge gestures) ===
+  let touchStartX = 0, touchStartY = 0, touchStartTime = 0;
+  document.addEventListener('touchstart', (e) => {
+    if (e.touches.length !== 1) return;
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+    touchStartTime = Date.now();
+  }, { passive: true });
+  document.addEventListener('touchend', (e) => {
+    if (e.changedTouches.length !== 1) return;
+    const dx = e.changedTouches[0].clientX - touchStartX;
+    const dy = e.changedTouches[0].clientY - touchStartY;
+    const dt = Date.now() - touchStartTime;
+    // Only count horizontal swipes (not vertical scroll), and only if fast + far enough
+    if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy) * 1.5 && dt < 600) {
+      dx < 0 ? next() : prev();
+    }
+  }, { passive: true });
+
+  // Wrap go() to update touch nav counter too
+  const _go = go;
+  window.go = (i) => {
+    _go(i);
+    if (touchProgress) touchProgress.textContent = (current + 1) + ' / ' + slides.length;
+  };
 
   updateProgress();
   resetHintTimer();
