@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1920">
+<title>OMG · The Meaning of Marriage · Chapter 3</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,700;1,500;1,700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-dark: #1A1614;
+  --cream: #F5EFE6;
+  --cream-soft: rgba(245, 239, 230, 0.85);
+  --amber: #D4996A;
+  --amber-soft: rgba(212, 153, 106, 0.9);
+  --sage: #7C9A7E;
+  --sage-soft: rgba(124, 154, 126, 0.85);
+  --warm-gray: rgba(245, 239, 230, 0.55);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html, body {
+  width: 100%;
+  height: 100vh;
+  background: var(--bg-dark);
+  color: var(--cream);
+  font-family: 'Inter', -apple-system, sans-serif;
+  overflow: hidden;
+  user-select: none;
+}
+
+/* === SLIDE FRAME === */
+.deck {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-dark);
+}
+
+.slide {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.8s ease, transform 0.8s ease;
+  transform: scale(1.02);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.slide.active {
+  opacity: 1;
+  visibility: visible;
+  transform: scale(1);
+}
+
+.slide-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  z-index: 1;
+}
+
+.slide-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(26, 22, 20, 0.85) 0%,
+    rgba(26, 22, 20, 0.65) 40%,
+    rgba(26, 22, 20, 0.35) 70%,
+    rgba(26, 22, 20, 0.15) 100%
+  );
+  z-index: 2;
+}
+
+.slide-overlay.center {
+  background: linear-gradient(
+    180deg,
+    rgba(26, 22, 20, 0.3) 0%,
+    rgba(26, 22, 20, 0.65) 50%,
+    rgba(26, 22, 20, 0.85) 100%
+  );
+}
+
+.slide-overlay.dark-full {
+  background: rgba(26, 22, 20, 0.55);
+}
+
+.slide-content {
+  position: relative;
+  z-index: 3;
+  width: 100%;
+  max-width: 1600px;
+  padding: 0 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.slide-content.center {
+  align-items: center;
+  text-align: center;
+  padding: 0 120px;
+}
+
+.slide-content.right {
+  margin-left: auto;
+  margin-right: 0;
+  max-width: 850px;
+}
+
+/* === TYPOGRAPHY === */
+.eyebrow {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--amber);
+  margin-bottom: 24px;
+  opacity: 0.95;
+}
+
+.series-mark {
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: var(--amber);
+  margin-bottom: 36px;
+}
+
+.omg-lockup {
+  font-family: 'Playfair Display', serif;
+  font-size: 120px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--cream);
+  margin-bottom: 12px;
+}
+
+.title-main {
+  font-family: 'Playfair Display', serif;
+  font-size: 64px;
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  color: var(--cream);
+  margin-bottom: 18px;
+}
+
+.title-question {
+  font-family: 'Playfair Display', serif;
+  font-size: 72px;
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: -0.015em;
+  color: var(--cream);
+}
+
+.title-question em {
+  font-style: italic;
+  font-weight: 500;
+  color: var(--amber);
+}
+
+.subtitle {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 26px;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--cream-soft);
+  line-height: 1.3;
+  margin-top: 12px;
+}
+
+.quote-text {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 36px;
+  font-weight: 400;
+  font-style: italic;
+  line-height: 1.4;
+  color: var(--cream);
+  letter-spacing: -0.005em;
+  max-width: 1100px;
+}
+
+.attribution {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--amber);
+  margin-top: 32px;
+  opacity: 0.9;
+}
+
+.framework-side {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin-top: 36px;
+}
+
+.framework-side h3 {
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.framework-side p {
+  font-family: 'Inter', sans-serif;
+  font-size: 22px;
+  font-weight: 400;
+  line-height: 1.4;
+  color: var(--cream);
+  margin-bottom: 8px;
+}
+
+.framework-side.consumer h3 { color: rgba(212, 130, 130, 0.95); }
+.framework-side.consumer p { color: var(--cream-soft); }
+.framework-side.covenant h3 { color: var(--sage); }
+
+.list-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 28px;
+}
+
+.list-stack li {
+  font-family: 'Inter', sans-serif;
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 1.4;
+  color: var(--cream);
+  list-style: none;
+  padding-left: 32px;
+  position: relative;
+}
+
+.list-stack li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 14px;
+  width: 18px;
+  height: 2px;
+  background: var(--amber);
+}
+
+.q-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 36px;
+  font-weight: 500;
+  color: var(--amber);
+  margin-right: 16px;
+}
+
+.slide-corner {
+  position: absolute;
+  top: 32px;
+  left: 48px;
+  z-index: 4;
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--cream-soft);
+  opacity: 0.7;
+}
+
+.slide-counter {
+  position: absolute;
+  top: 32px;
+  right: 48px;
+  z-index: 4;
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.25em;
+  color: var(--cream-soft);
+  opacity: 0.7;
+}
+
+.slide-counter .current {
+  color: var(--amber);
+  font-weight: 600;
+}
+
+/* === NIKKI PLACEHOLDER STYLE === */
+.nikki-slide {
+  background: var(--bg-dark);
+}
+
+.nikki-slide::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, rgba(212, 153, 106, 0.08) 0%, transparent 70%);
+  z-index: 1;
+}
+
+.nikki-eyebrow {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: var(--amber);
+  margin-bottom: 24px;
+}
+
+.nikki-prompt {
+  font-family: 'Inter', sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 1.6;
+  color: var(--warm-gray);
+  margin-top: 32px;
+  padding-left: 24px;
+  border-left: 2px solid rgba(212, 153, 106, 0.4);
+  font-style: italic;
+}
+
+/* === DECK CHROME === */
+.progress-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: rgba(245, 239, 230, 0.08);
+  z-index: 100;
+}
+
+.progress-fill {
+  height: 100%;
+  background: var(--amber);
+  width: 0%;
+  transition: width 0.4s ease;
+}
+
+.nav-hint {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 50;
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(245, 239, 230, 0.4);
+  pointer-events: none;
+  opacity: 1;
+  transition: opacity 0.6s ease;
+}
+
+.nav-hint.hidden { opacity: 0; }
+
+.nav-hint kbd {
+  display: inline-block;
+  padding: 2px 7px;
+  margin: 0 3px;
+  background: rgba(245, 239, 230, 0.12);
+  border-radius: 3px;
+  font-family: inherit;
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.fullscreen-btn {
+  position: fixed;
+  top: 24px;
+  right: 48px;
+  z-index: 60;
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(245, 239, 230, 0.5);
+  background: rgba(26, 22, 20, 0.5);
+  border: 1px solid rgba(245, 239, 230, 0.15);
+  padding: 6px 12px;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.fullscreen-btn:hover {
+  color: var(--amber);
+  border-color: rgba(212, 153, 106, 0.5);
+}
+
+@media (max-width: 1200px) {
+  .title-main { font-size: 48px; }
+  .title-question { font-size: 56px; }
+  .quote-text { font-size: 28px; }
+  .omg-lockup { font-size: 90px; }
+  .list-stack li { font-size: 19px; }
+}
+</style>
+</head>
+<body>
+<div class="deck" id="deck">
+
+  <!-- SLIDE 1: TITLE -->
+  <section class="slide active" data-slide="1">
+    <div class="slide-bg" style="background-image: url('img/slide-01-title.jpg')"></div>
+    <div class="slide-overlay"></div>
+    <div class="slide-counter"><span class="current">01</span> / 11</div>
+    <div class="slide-content">
+      <div class="series-mark">OMG · Marriage Series</div>
+      <div class="omg-lockup">The Meaning<br>of Marriage</div>
+      <div class="subtitle">Chapter 3 · The Essence of Marriage</div>
+      <div style="margin-top: 32px; font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 500; letter-spacing: 0.25em; text-transform: uppercase; color: rgba(245, 239, 230, 0.6);">
+        Covenant over Consumer
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 2: HOOK -->
+  <section class="slide" data-slide="2">
+    <div class="slide-bg" style="background-image: url('img/slide-02-hook.jpg')"></div>
+    <div class="slide-overlay"></div>
+    <div class="slide-counter"><span class="current">02</span> / 11</div>
+    <div class="slide-content right">
+      <div class="eyebrow">The Question</div>
+      <h1 class="title-question">
+        What if your marriage<br>
+        wasn't built to make you happy —<br>
+        but to make you <em>holy?</em>
+      </h1>
+      <div class="attribution">Tim Keller · The Meaning of Marriage</div>
+    </div>
+  </section>
+
+  <!-- SLIDE 3: FRAMEWORK -->
+  <section class="slide" data-slide="3">
+    <div class="slide-bg" style="background-image: url('img/slide-03-framework.jpg')"></div>
+    <div class="slide-overlay"></div>
+    <div class="slide-counter"><span class="current">03</span> / 11</div>
+    <div class="slide-content right">
+      <div class="eyebrow">The Big Idea</div>
+      <p class="title-main" style="font-size: 38px; font-style: italic; color: var(--cream); font-family: 'Cormorant Garamond', serif; line-height: 1.3;">
+        "The essence of marriage is a sacrificial commitment to the good of the other."
+      </p>
+      <div class="attribution">Tim Keller · p. 79</div>
+      <div style="display: flex; gap: 64px; margin-top: 40px;">
+        <div class="framework-side consumer">
+          <h3>Consumer Model</h3>
+          <p>"What's in it for me?"</p>
+          <p style="font-size: 16px; opacity: 0.7;">Leave when needs aren't met.</p>
+        </div>
+        <div class="framework-side covenant">
+          <h3>Covenant Model</h3>
+          <p>"How do I love you well?"</p>
+          <p style="font-size: 16px; opacity: 0.7;">Stay when it costs.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 4: QUOTE 1 -->
+  <section class="slide" data-slide="4">
+    <div class="slide-bg" style="background-image: url('img/slide-04-quote1.jpg')"></div>
+    <div class="slide-overlay center"></div>
+    <div class="slide-counter"><span class="current">04</span> / 11</div>
+    <div class="slide-content center">
+      <div class="eyebrow">Quote · The Consumer Model</div>
+      <p class="quote-text" style="font-size: 30px; max-width: 1200px; text-align: center;">
+        "Throughout history there have always been consumer relationships. Such a relationship lasts only as long as the vendor meets your needs at a cost acceptable to you. If another vendor delivers better services or the same services at a better cost, you have no obligation to stay in a relationship to the original vendor."
+      </p>
+      <div class="attribution">Tim Keller · The Meaning of Marriage · p. 71</div>
+    </div>
+  </section>
+
+  <!-- SLIDE 5: QUOTE 2 -->
+  <section class="slide" data-slide="5">
+    <div class="slide-bg" style="background-image: url('img/slide-05-quote2.jpg')"></div>
+    <div class="slide-overlay center"></div>
+    <div class="slide-counter"><span class="current">05</span> / 11</div>
+    <div class="slide-content center">
+      <div class="eyebrow">Quote · Vows as a Future Promise</div>
+      <p class="quote-text" style="font-size: 32px; max-width: 1200px; text-align: center;">
+        "Wedding vows are not a declaration of present love but a mutually binding promise of future love. A wedding should not be primarily a celebration of how loving you feel now — that can safely be assumed."
+      </p>
+      <div class="attribution">Tim Keller · The Meaning of Marriage · p. 91</div>
+    </div>
+  </section>
+
+  <!-- SLIDE 6: QUOTE 3 (GOSPEL PIVOT) -->
+  <section class="slide" data-slide="6">
+    <div class="slide-bg" style="background-image: url('img/slide-06-quote3.jpg')"></div>
+    <div class="slide-overlay center"></div>
+    <div class="slide-counter"><span class="current">06</span> / 11</div>
+    <div class="slide-content center">
+      <div class="eyebrow">Quote · The Gospel Pivot</div>
+      <p class="quote-text" style="font-size: 36px; max-width: 1100px; text-align: center; font-style: italic; color: var(--cream);">
+        "'He loved us, not because we were lovely to him, but to make us lovely.' That is why I am going to love my spouse. Speak to your heart like that, and then fulfill the promises you made on your wedding day."
+      </p>
+      <div class="attribution">Tim Keller · The Meaning of Marriage</div>
+    </div>
+  </section>
+
+  <!-- SLIDE 7: APPLICATION PIVOT -->
+  <section class="slide" data-slide="7">
+    <div class="slide-bg" style="background-image: url('img/slide-07-pivot.jpg')"></div>
+    <div class="slide-overlay"></div>
+    <div class="slide-counter"><span class="current">07</span> / 11</div>
+    <div class="slide-content right">
+      <div class="eyebrow">The Application</div>
+      <h1 class="title-main" style="font-size: 48px;">
+        This is the only love<br>
+        that can sustain a marriage.
+      </h1>
+      <p style="font-family: 'Cormorant Garamond', serif; font-size: 28px; font-style: italic; color: var(--cream-soft); line-height: 1.4; margin-top: 24px;">
+        Not <em>"I love you because you're lovely"</em><br>
+        but <em style="color: var(--amber);">"I love you to make you lovely."</em>
+      </p>
+      <p style="font-family: 'Inter', sans-serif; font-size: 19px; color: var(--cream-soft); line-height: 1.5; margin-top: 24px; max-width: 720px;">
+        When you receive this kind of love from God, it frees you to give it — imperfectly, daily — to your spouse.
+      </p>
+    </div>
+  </section>
+
+  <!-- SLIDE 8: NIKKI 1 -->
+  <section class="slide nikki-slide" data-slide="8">
+    <div class="slide-counter"><span class="current">08</span> / 11</div>
+    <div class="slide-content center" style="max-width: 1000px;">
+      <div class="nikki-eyebrow">From Nikki</div>
+      <h2 class="title-main" style="font-size: 56px; text-align: center; margin-bottom: 32px;">
+        Point 1
+      </h2>
+      <div class="subtitle" style="text-align: center; max-width: 800px; font-size: 24px; color: var(--warm-gray);">
+        [Nikki's observation, application, or personal story here. ~1-2 sentences.]
+      </div>
+      <div class="nikki-prompt" style="text-align: center; border-left: none; border-top: 2px solid rgba(212, 153, 106, 0.4); padding-left: 0; padding-top: 24px; max-width: 700px; margin: 48px auto 0;">
+        Nik — drop your point here when ready. I'll tighten the wording if you want.
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 9: NIKKI 2 -->
+  <section class="slide nikki-slide" data-slide="9">
+    <div class="slide-counter"><span class="current">09</span> / 11</div>
+    <div class="slide-content center" style="max-width: 1000px;">
+      <div class="nikki-eyebrow">From Nikki</div>
+      <h2 class="title-main" style="font-size: 56px; text-align: center; margin-bottom: 32px;">
+        Point 2
+      </h2>
+      <div class="subtitle" style="text-align: center; max-width: 800px; font-size: 24px; color: var(--warm-gray);">
+        [Nikki's observation, application, or personal story here. ~1-2 sentences.]
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 10: NIKKI 3 -->
+  <section class="slide nikki-slide" data-slide="10">
+    <div class="slide-counter"><span class="current">10</span> / 11</div>
+    <div class="slide-content center" style="max-width: 1000px;">
+      <div class="nikki-eyebrow">From Nikki</div>
+      <h2 class="title-main" style="font-size: 56px; text-align: center; margin-bottom: 32px;">
+        Point 3
+      </h2>
+      <div class="subtitle" style="text-align: center; max-width: 800px; font-size: 24px; color: var(--warm-gray);">
+        [Nikki's observation, application, or personal story here. ~1-2 sentences.]
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 11: DISCUSSION -->
+  <section class="slide" data-slide="11">
+    <div class="slide-bg" style="background-image: url('img/slide-11-discuss.jpg')"></div>
+    <div class="slide-overlay dark-full"></div>
+    <div class="slide-counter"><span class="current">11</span> / 11</div>
+    <div class="slide-content" style="max-width: 1400px;">
+      <div class="eyebrow">Discuss in your groups · 5–7 min each</div>
+      <h1 class="title-main" style="font-size: 42px; margin-bottom: 28px;">
+        Four questions
+      </h1>
+      <ol class="list-stack" style="counter-reset: q; padding-left: 0;">
+        <li><span class="q-num">1.</span>Where do you see the <em style="color: var(--amber); font-style: italic;">consumer model</em> showing up — in our culture, or honestly, in our own marriage?</li>
+        <li><span class="q-num">2.</span>Your vows were a <em style="color: var(--amber); font-style: italic;">future promise</em>, not a present feeling. Where in your week does that promise feel hardest to keep?</li>
+        <li><span class="q-num">3.</span>"He loved us to make us lovely." How does receiving this from Christ change how you love your spouse on a hard day?</li>
+        <li><span class="q-num">4.</span>Pick one practical act of <em style="color: var(--amber); font-style: italic;">covenant</em> love this week. What is it? Tell your spouse tonight.</li>
+      </ol>
+    </div>
+  </section>
+
+</div>
+
+<!-- Chrome -->
+<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+<div class="nav-hint" id="navHint">
+  <kbd>←</kbd> <kbd>→</kbd> Navigate · <kbd>F</kbd> Fullscreen
+</div>
+<button class="fullscreen-btn" id="fsBtn" style="display: none;">⛶ Fullscreen</button>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  const progressFill = document.getElementById('progressFill');
+  const navHint = document.getElementById('navHint');
+  const fsBtn = document.getElementById('fsBtn');
+  let current = 0;
+  let hintTimer;
+
+  function go(idx(i)) {
+    if (idx(i) < 0 || idx(i) >= slides.length) return;
+    slides[current].classList.remove('active');
+    current = idx(i);
+    slides[current].classList.add('active');
+    updateProgress();
+    resetHintTimer();
+  }
+
+  function updateProgress() {
+    const pct = ((current + 1) / slides.length) * 100;
+    progressFill.style.width = pct + '%';
+  }
+
+  function next() { go(current + 1); }
+  function prev() { go(current - 1); }
+
+  function resetHintTimer() {
+    navHint.classList.remove('hidden');
+    clearTimeout(hintTimer);
+    hintTimer = setTimeout(() => navHint.classList.add('hidden'), 4000);
+  }
+
+  function toggleFullscreen() {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen();
+    } else {
+      document.exitFullscreen();
+    }
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') { e.preventDefault(); next(); }
+    else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); prev(); }
+    else if (e.key === 'Home') { e.preventDefault(); go(0); }
+    else if (e.key === 'End') { e.preventDefault(); go(slides.length - 1); }
+    else if (e.key === 'f' || e.key === 'F') { toggleFullscreen(); }
+    else if (/^[0-9]$/.test(e.key)) {
+      const n = parseInt(e.key);
+      if (n >= 1 && n <= slides.length) go(n - 1);
+    }
+  });
+
+  // Click anywhere to advance (anywhere except buttons)
+  document.addEventListener('click', (e) => {
+    if (e.target.tagName === 'BUTTON' || e.target.tagName === 'A') return;
+    next();
+  });
+
+  // Touch swipe support
+  let touchStartX = 0;
+  document.addEventListener('touchstart', (e) => { touchStartX = e.touches[0].clientX; });
+  document.addEventListener('touchend', (e) => {
+    const dx = e.changedTouches[0].clientX - touchStartX;
+    if (Math.abs(dx) > 50) { dx < 0 ? next() : prev(); }
+  });
+
+  fsBtn.addEventListener('click', toggleFullscreen);
+  document.addEventListener('fullscreenchange', () => {
+    fsBtn.style.display = document.fullscreenElement ? 'none' : 'block';
+  });
+
+  updateProgress();
+  resetHintTimer();
+</script>
+</body>
+</html>
